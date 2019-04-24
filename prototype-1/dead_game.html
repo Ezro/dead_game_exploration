@@ -41,6 +41,9 @@
 		}
 		var camera, scene, renderer, stats;
 		var interactableObjects;
+		var previousSelectedObject;
+		var selectedObject;
+
 		init();
 		animate();
 
@@ -104,6 +107,20 @@
 			var timer = Date.now() * 0.0001;
 			camera.lookAt(scene.position);
 			renderer.render(scene, camera);
+			if (selectedObject !== undefined) {
+				selectedObject.scale.x = 1.5;
+				selectedObject.scale.y = 1.5;
+				selectedObject.scale.z = 1.5;
+				if (previousSelectedObject === undefined) {
+					previousSelectedObject = selectedObject;
+				}
+				if (previousSelectedObject !== selectedObject) {
+					previousSelectedObject.scale.x = 1;
+					previousSelectedObject.scale.y = 1;
+					previousSelectedObject.scale.z = 1;
+					previousSelectedObject = selectedObject;
+				}
+			}
 		}
 
 		var raycaster = new THREE.Raycaster();
@@ -116,7 +133,7 @@
 			raycaster.setFromCamera(mouse, camera);
 			var intersects = raycaster.intersectObjects(interactableObjects);
 			if (intersects.length > 0) {
-				console.log(intersects[0].object.name);
+				selectedObject = intersects[0].object;
 			}
 		}
 	</script>
