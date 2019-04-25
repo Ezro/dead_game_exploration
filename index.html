@@ -87,7 +87,6 @@
 			stats = new Stats();
 			document.body.appendChild(stats.dom);
 			window.addEventListener('resize', onWindowResize, false);
-			window.addEventListener("touchstart", onInteract, false);
 			window.addEventListener("click", onInteract, false);
 		}
 
@@ -133,7 +132,17 @@
 			raycaster.setFromCamera(mouse, camera);
 			var intersects = raycaster.intersectObjects(interactableObjects);
 			if (intersects.length > 0) {
-				selectedObject = intersects[0].object;
+				var interactedObject = intersects[0].object;
+				console.log(interactedObject);
+				if (selectedObject === interactedObject) {
+					previousSelectedObject.scale.x = 1;
+					previousSelectedObject.scale.y = 1;
+					previousSelectedObject.scale.z = 1;
+					selectedObject = undefined;
+				}
+				else {
+					selectedObject = interactedObject;
+				}
 			}
 		}
 	</script>
